@@ -38,16 +38,17 @@ export function getAverageRatingPerGenre(rows) {
     const ratings = {};
 
     rows.forEach(row => {
-
-        // only considering movies with valid ratings
+        // only considering movies with valid
         if (row.titleType !== 'movie') return;
-         if (row.averageRating == null || isNaN(row.averageRating)) return;
+        if (row.averageRating == null || isNaN(row.averageRating)) return;
 
         // count genres of each film
-        const genres = row.genres ? row.genres.split(' ') : [];
+        const genres = typeof row.genres === 'string' ? row.genres.split(' ') : [];
         genres.forEach(genre => {
-            counts[genre] = (counts[genre] || 0) + 1; // count movies in genre
-            ratings[genre]=(ratings[genre] || 0) + row.averageRating; // add rating to genre's rating counter
+            if (genre !== '\\N') {
+                counts[genre] = (counts[genre] || 0) + 1; // count movies in genre
+                ratings[genre]=(ratings[genre] || 0) + row.averageRating; // add rating to genre's rating counter
+            }  
         });
     });
 
@@ -55,7 +56,10 @@ export function getAverageRatingPerGenre(rows) {
     const averages = Object.keys(counts).map(genre => ({
         name: genre,
         value: ratings[genre] / counts[genre],
+        count: counts[genre],
     }));
 
     return averages;
 }
+
+// genre rating change over time

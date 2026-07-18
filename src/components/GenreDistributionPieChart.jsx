@@ -41,7 +41,7 @@ const renderCustomizedLabel = (props) => {
 
   const ncx = Number(cx);
   const ncy = Number(cy);
-  const isSmall = (percent ?? 0) < 0.05;
+  const isSmall = (percent ?? 0) < 0.08;
 
   if (isSmall) {
     // Leader line for small slices
@@ -73,7 +73,7 @@ const renderCustomizedLabel = (props) => {
 
   return (
     <g>
-      <text x={x} y={y} dy="-0.3em" fill="white" textAnchor={anchor} dominantBaseline="central">
+      <text x={x+6} y={y+1} dy="0em" fill="white" textAnchor={anchor} dominantBaseline="central">
         {name}
       </text>
       <text x={x} y={y} dy="1em" fill="white" textAnchor={anchor} dominantBaseline="central">

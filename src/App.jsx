@@ -1,11 +1,17 @@
 import DashboardNavbar from "./components/DashboardNav";
 import PieChartWithCustomizedLabel from "./components/GenreDistributionPieChart";
+import RatingPerGenreBarChart from "./components/RatingPerGenreBarChart";
 import { useParseData } from './utils/parseData';
-import { getGenreDistributionPerYear } from "./utils/dataManipulation";
+import { getGenreDistributionPerYear, getAverageRatingPerGenre } from "./utils/dataManipulation";
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
+
+// TODO: Add Cards (Most popular genre rn, ensure visually good spaced out)
+// TODO: Add containers for graphs, add titles
+// TODO: Add interactions
+// TODO: Add more translations 
 function App() {
   const { t } = useTranslation()
   const { rows, loading, error } = useParseData('/title.basics.ratings.csv');
@@ -28,15 +34,15 @@ function App() {
     </div>);
   }
 
-  console.log('done loading!');
-  console.log(rows);
   // Get data for charts
   const pieChartData = getGenreDistributionPerYear(rows, 2026); // Defaults to current year
-  
+  const barChartData = getAverageRatingPerGenre(rows);
+
   return (
     <>
       <DashboardNavbar/>
       <PieChartWithCustomizedLabel data={pieChartData}/>
+      <RatingPerGenreBarChart data={barChartData} />
     </>
   )
 }
