@@ -10,7 +10,7 @@ export default function DashboardNavbar() {
   }
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark" className="mb-4">
+    <Navbar style={{ backgroundColor: '#3a2647'}} data-bs-theme="dark" style={{ backgroundColor: '#3a2647' }}>
       <Container>
         <Navbar.Brand>{t('appTitle')}</Navbar.Brand>
         <ButtonGroup>

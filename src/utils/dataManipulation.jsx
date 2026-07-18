@@ -21,9 +21,9 @@ export function getGenreDistributionPerYear(rows, year) {
         .map(([name, value]) => ({ name, value }))
         .sort((a, b) => b.value - a.value);
 
-    // split into top 7 and the rest (for readability in pie)
-    const top = sorted.slice(0, 7);
-    const rest = sorted.slice(7);
+    // split into top 9 and the rest (for readability in pie)
+    const top = sorted.slice(0, 8);
+    const rest = sorted.slice(8);
 
     if (rest.length > 0) {
         const otherTotal = rest.reduce((sum, g) => sum + g.value, 0);
@@ -40,7 +40,7 @@ export function getAverageRatingPerGenre(rows) {
     rows.forEach(row => {
         // only considering movies with valid
         if (row.titleType !== 'movie') return;
-        if (row.averageRating == null || isNaN(row.averageRating)) return;
+        if (row.averageRating == null || isNaN(row.averageRating) || row.averageRating < 0 || row.averageRating > 10 ) return; // dont use corrupt data
 
         // count genres of each film
         const genres = typeof row.genres === 'string' ? row.genres.split(' ') : [];
@@ -62,4 +62,36 @@ export function getAverageRatingPerGenre(rows) {
     return averages;
 }
 
-// genre rating change over time
+// genre rating change over time IDK IF WILL DO
+
+export function getNumGenres(rows) {
+  const genreSet = new Set();
+
+  rows.forEach(row => {
+    const rowGenres = typeof row.genres === 'string' ? row.genres.split(' ').filter(Boolean) : [];
+    rowGenres.forEach(genre => {
+      if (genre !== '\\N') {
+        genreSet.add(genre);
+      }
+    });
+  });
+
+  return Array.from(genreSet);
+}
+
+
+export function getAverageRatingAcrossAllMedia(rows) {
+  let count = 0;
+  let ratings = 0;
+
+  rows.forEach(row => {
+    const rating = row.averageRating;
+    if (rating == null || isNaN(rating) || rating < 0 || rating > 10) return; // skip invalid/corrupted values
+
+    count++;
+    ratings += rating;
+  });
+
+  const avg = ratings / count;
+  return Math.round(avg * 10) / 10;
+}
