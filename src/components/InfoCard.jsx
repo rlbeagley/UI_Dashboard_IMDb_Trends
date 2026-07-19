@@ -22,7 +22,7 @@ export default function InfoCard({ header, value, subtitle, icon }) {
             fontWeight: 600,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            marginBottom: '0.5rem',
+            marginBottom: '0.2rem',
           }}
         >
           {header}
@@ -33,7 +33,7 @@ export default function InfoCard({ header, value, subtitle, icon }) {
             color: '#FFA94D',
             fontWeight: 700,
             fontSize: '2.5rem',
-            marginBottom: '0.5rem',
+            marginBottom: '0.2rem',
             lineHeight: 1,
           }}
         >

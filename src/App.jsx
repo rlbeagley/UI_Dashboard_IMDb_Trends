@@ -2,6 +2,8 @@ import DashboardNavbar from "./components/DashboardNav";
 import PieChartWithCustomizedLabel from "./components/GenreDistributionPieChart";
 import RatingPerGenreBarChart from "./components/RatingPerGenreBarChart";
 import InfoCard from "./components/InfoCard";
+import MediaTypeSelector from "./components/MediaTypeSelector";
+import YearSelector from "./components/YearSelector";
 import { useParseData } from './utils/parseData';
 import { getGenreDistributionPerYear, getAverageRatingPerGenre, getNumGenres, getAverageRatingAcrossAllMedia } from "./utils/dataManipulation";
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap'
@@ -16,6 +18,9 @@ import { useState } from 'react';
 function App() {
   const { t } = useTranslation()
   const { rows, loading, error } = useParseData('/title.basics.ratings.csv');
+  const [pieDataYear, setPieDataYear] = useState(2026);
+  const [barMediaType, setBarMediaType] = useState('movie');
+
 
   if (loading) {
     return (
@@ -36,8 +41,10 @@ function App() {
   }
 
   // Get data for charts
-  const pieChartData = getGenreDistributionPerYear(rows, 2026); // Defaults to current year
-  const barChartData = getAverageRatingPerGenre(rows);
+  console.log([...new Set(rows.map(r => r.titleType))]);
+  
+  const pieChartData = getGenreDistributionPerYear(rows, pieDataYear);
+  const barChartData = getAverageRatingPerGenre(rows, barMediaType);
   const numGenres = getNumGenres(rows);
   const avgRatingOverall = getAverageRatingAcrossAllMedia(rows);
 
@@ -47,15 +54,17 @@ return (
     <Container
       fluid
       className="d-flex flex-column"
-      style={{ height: '100vh', overflow: 'hidden', paddingTop: '1rem', paddingBottom: '1rem' }}
+      style={{ height: '100vh', paddingTop: '1rem', paddingBottom: '1rem' }}
     >
       <Row className="flex-grow-1" style={{ minHeight: 0 }}>
-
         <Col md={6} className="d-flex flex-column">
           <Row className="flex-grow-1 mb-3" style={{ minHeight: 0 }}>
             <Col className="d-flex flex-column">
               <Card className="flex-grow-1 p-3" style={{ backgroundColor: '#3a2647', minHeight: 0 }}>
-                <Card.Title style={{ color: 'white' }}>{t("ratingPerGenreTitle")}</Card.Title>
+                <div className="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                  <Card.Title style={{ color: 'white', margin: 0 }}>{t("ratingPerGenreTitle")}</Card.Title>
+                  <MediaTypeSelector value={barMediaType} onChange={setBarMediaType} />
+                </div>
                 <div className="flex-grow-1" style={{ minHeight: 0 }}>
                   <RatingPerGenreBarChart data={barChartData} />
                 </div>
@@ -87,6 +96,7 @@ return (
         <Col md={6} className="d-flex flex-column">
           <Card className="flex-grow-1 p-3" style={{ backgroundColor: '#3a2647', minHeight: 0 }}>
             <Card.Title style={{ color: 'white' }}>{t("genreDistributionTitle")}</Card.Title>
+            <YearSelector value={pieDataYear} onChange={setPieDataYear} />
             <PieChartWithCustomizedLabel data={pieChartData} />
           </Card>
         </Col>

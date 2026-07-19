@@ -1,3 +1,47 @@
 body {
   background-color: #190120;
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, .card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.navbar, .navbar-brand, .nav-link {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.recharts-text,
+.recharts-cartesian-axis-tick-value,
+.recharts-label {
+  font-family: 'Inter', sans-serif;
+}
+
+.form-range::-webkit-slider-thumb {
+  background-color: #FFA94D;
+}
+
+.form-range::-moz-range-thumb {
+  background-color: #FFA94D;
+  border: none;
+}
+
+.form-range::-ms-thumb {
+  background-color: #FFA94D;
+}
+
+
+.form-range::-webkit-slider-runnable-track {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-range::-moz-range-track {
+  background-color: rgba(255, 255, 255, 0.2);
 }

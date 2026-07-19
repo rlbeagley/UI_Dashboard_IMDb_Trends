@@ -6,13 +6,15 @@ export function getGenreDistributionPerYear(rows, year) {
 
     // for each row
     rows.forEach(row => {
-        if (row.titleType !== 'movie') return;
+        if (row.titleType !== 'movie' ) return;
         if (row.startYear !== year) return;
 
         // count genres of each film
         const genres = row.genres ? row.genres.split(' ') : [];
         genres.forEach(genre => {
-        counts[genre] = (counts[genre] || 0) + 1;
+            if (genre !== '\\N') {
+                counts[genre] = (counts[genre] || 0) + 1;
+            }
         });
     });
 
@@ -33,13 +35,13 @@ export function getGenreDistributionPerYear(rows, year) {
     return top;
 }
 
-export function getAverageRatingPerGenre(rows) {
+export function getAverageRatingPerGenre(rows, mediaType = "movie") {
     const counts = {}; 
     const ratings = {};
 
     rows.forEach(row => {
         // only considering movies with valid
-        if (row.titleType !== 'movie') return;
+        if (row.titleType !== mediaType) return;
         if (row.averageRating == null || isNaN(row.averageRating) || row.averageRating < 0 || row.averageRating > 10 ) return; // dont use corrupt data
 
         // count genres of each film
